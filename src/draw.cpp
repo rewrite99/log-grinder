@@ -1,6 +1,5 @@
 #include "draw.hpp"
-#include "monitor_log.hpp"
-#include "timer.hpp"
+#include "moneylog.hpp"
 
 #include <chrono>
 #include <fmt/compile.h>
@@ -8,15 +7,14 @@
 #include <thread>
 
 namespace {
-    MonitorLog mLog {};
     Timer g_mainTimer {TimerMode::Stopwatch};
 }
-
-MonitorLog& mainLog(){ return mLog; }
 
 Timer& mainTimer(){ return g_mainTimer; }
 
 void draw(){
+    MoneyLog& mlog {MoneyLog::Get()};
+
     constexpr auto TEMPLATE {FMT_COMPILE(
         "\033[H"
         "Time\t{:>15}\n"
@@ -30,13 +28,13 @@ void draw(){
     g_mainTimer.startTimer();
 
     while (true){
-        mLog.updateLog();
+        MoneyLog::Get().updateLog();
         fmt::print(TEMPLATE,
             g_mainTimer.timeFormat(g_mainTimer.getTimeMs()),
-            mLog.addComma(mLog.getGainedAmount()),
-            mLog.addComma(mLog.getTotalAmount()),
-            mLog.addComma(mLog.ratePerHr()),
-            mLog.addComma(mLog.ratePerMin())
+            mlog.addComma(mlog.gainedAmount()),
+            mlog.addComma(mlog.totalAmount()),
+            mlog.addComma(mlog.ratePerHr()),
+            mlog.addComma(mlog.ratePerMin())
         );
         std::this_thread::sleep_for(std::chrono::milliseconds(16));
     }

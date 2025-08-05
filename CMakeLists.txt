@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(${TARGET_NAME}
     src/main.cpp
-    src/monitor_log.cpp
+    src/moneylog.cpp
     src/timer.cpp
     src/draw.cpp
 )

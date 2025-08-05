@@ -1,7 +1,6 @@
 #pragma once
 
-#include <fmt/format.h>
-
+#include <fmt/core.h>
 #include <windows.h>
 
 struct ConsoleSetup{
