@@ -6,6 +6,11 @@
 #include <fmt/core.h>
 #include <string>
 
+Timer& Timer::MainTimer(){
+    static Timer t {TimerMode::Stopwatch};
+    return t;
+}
+
 Timer::Timer(TimerMode tm, int64_t sec) : mode{tm}{
     int64_t ms {sec * 1000};
     setTimer(ms);
@@ -58,7 +63,7 @@ std::string Timer::timeFormat(int64_t ms) const{
     return fmt::format(FMT_COMPILE("{:3}{}{:02}{}{:02}"), hr, sep, min, sep, sec);
 }
 
-int64_t Timer::getTimeMs(){
+int64_t Timer::timeMs(){
     auto now {is_running ? Clock::now() : tp_end};
     int64_t duration {duration_cast<milliseconds>(now - tp_start).count()};
     

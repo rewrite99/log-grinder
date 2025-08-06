@@ -16,6 +16,8 @@ enum class TimerMode{
 
 class Timer{
 public:
+    static Timer& MainTimer();
+
     Timer(TimerMode tm, int64_t sec = 0);
     void startTimer();
     void stopTimer();
@@ -23,7 +25,7 @@ public:
     void resetTimer();
     void setTimer(int64_t ms);
     std::string timeFormat(int64_t ms) const;
-    int64_t getTimeMs();
+    int64_t timeMs();
     bool isTimerRunning() const;
 
 private:

@@ -1,16 +1,11 @@
 #include "draw.hpp"
 #include "moneylog.hpp"
+#include "timer.hpp"
 
 #include <chrono>
 #include <fmt/compile.h>
 #include <fmt/core.h>
 #include <thread>
-
-namespace {
-    Timer g_mainTimer {TimerMode::Stopwatch};
-}
-
-Timer& mainTimer(){ return g_mainTimer; }
 
 void draw(){
     MoneyLog& mlog {MoneyLog::Get()};
@@ -25,12 +20,12 @@ void draw(){
         )
     };
 
-    g_mainTimer.startTimer();
+    Timer::MainTimer().startTimer();
 
     while (true){
-        MoneyLog::Get().updateLog();
+        mlog.updateLog();
         fmt::print(TEMPLATE,
-            g_mainTimer.timeFormat(g_mainTimer.getTimeMs()),
+            Timer::MainTimer().timeFormat(Timer::MainTimer().timeMs()),
             mlog.addComma(mlog.gainedAmount()),
             mlog.addComma(mlog.totalAmount()),
             mlog.addComma(mlog.ratePerHr()),
