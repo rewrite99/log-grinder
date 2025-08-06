@@ -11,7 +11,7 @@ void draw(){
     MoneyLog& mlog {MoneyLog::Get()};
 
     constexpr auto TEMPLATE {FMT_COMPILE(
-        "\033[H"
+        "\033[?25l\033[H"
         "Time\t{:>15}\n"
         "Gained\t{:>15}\n"
         "Total\t{:>15}\n"
