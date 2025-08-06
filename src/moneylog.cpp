@@ -1,5 +1,5 @@
-#include "draw.hpp"
 #include "moneylog.hpp"
+#include "timer.hpp"
 
 #include <conio.h>
 #include <cstddef>
@@ -35,7 +35,7 @@ std::vector<std::string> MoneyLog::readLog(){
     static std::streampos last_pos {};
     static bool is_end {false};
 
-    if (!mainTimer().isTimerRunning()){
+    if (Timer::MainTimer().isTimerRunning()){
         is_end = true;
         return {};
     }
@@ -88,13 +88,13 @@ double MoneyLog::extractAmount(const std::string& s) const{
 }
 
 double MoneyLog::ratePerHr() const{
-    int64_t elapsed_sec {mainTimer().getTimeMs() / 1000};
+    int64_t elapsed_sec {Timer::MainTimer().timeMs() / 1000};
     if (elapsed_sec == 0) return {};
     return (total_amount / static_cast<double>(elapsed_sec)) * 3600;
 }
 
 double MoneyLog::ratePerMin() const{
-    int64_t elapsed_sec {mainTimer().getTimeMs() / 1000};
+    int64_t elapsed_sec {Timer::MainTimer().timeMs() / 1000};
     if (elapsed_sec == 0) return {};
     return (total_amount / static_cast<double>(elapsed_sec)) * 60;
 }

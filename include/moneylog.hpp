@@ -19,11 +19,6 @@ public:
     double totalAmount() const;
     void setFilePath(const std::filesystem::path& p);
 
-    MoneyLog(const MoneyLog&) = delete;
-    MoneyLog& operator = (const MoneyLog&) = delete;
-    MoneyLog(MoneyLog&&) = delete;
-    MoneyLog& operator = (MoneyLog&&) = delete;
-
 private:
     std::string parse_line {"[CHAT] You got: $"};
     std::filesystem::path logpath {};
