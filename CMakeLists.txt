@@ -1,33 +1,33 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(TARGET_NAME MyProject)
-project(${TARGET_NAME} LANGUAGES CXX)
+set(APP_NAME log_grinder)
+project(${APP_NAME} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(${TARGET_NAME}
+add_executable(${APP_NAME}
     src/main.cpp
     src/moneylog.cpp
     src/timer.cpp
     src/draw.cpp
 )
 
-target_include_directories(${TARGET_NAME} PRIVATE
+target_include_directories(${APP_NAME} PRIVATE
     include
 )
 
-target_link_directories(${TARGET_NAME} PRIVATE
+target_link_directories(${APP_NAME} PRIVATE
     
 )
 
 find_package(fmt REQUIRED)
-target_link_libraries(${TARGET_NAME} PRIVATE
+target_link_libraries(${APP_NAME} PRIVATE
     fmt::fmt
 )
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-    target_compile_options(${TARGET_NAME} PRIVATE
+    target_compile_options(${APP_NAME} PRIVATE
         -Wall
         -Weffc++
         -Wextra
@@ -36,7 +36,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
         -Werror
     )
 elseif (MSVC)
-    target_compile_options(${TARGET_NAME} PRIVATE
+    target_compile_options(${APP_NAME} PRIVATE
         /W4 /WX
     )
 endif()
