@@ -58,12 +58,12 @@ std::vector<std::string> MoneyLog::readLog(){
     file.seekg(last_pos);
 
     std::vector<std::string> lines {};
-    std::string newline {};
+    std::string line {};
 
-    while (std::getline(file, newline)){
-        if (newline.find(parse_line) != std::string::npos){
-            std::string after {newline.substr(newline.find(parse_line) + parse_line.size())};
-            lines.push_back(after);                
+    while (std::getline(file, line)){
+        if (line.find(search_str) != std::string::npos){
+            std::string amount_str {line.substr(line.find(search_str) + search_str.size())};
+            lines.push_back(amount_str);                
         }
         if (file.tellg() != -1) last_pos = file.tellg();            
     }

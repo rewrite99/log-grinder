@@ -20,7 +20,7 @@ public:
     void setFilePath(const std::filesystem::path& p);
 
 private:
-    std::string parse_line {"[CHAT] You got: $"};
+    std::string search_str {"[CHAT] You got: $"};
     std::filesystem::path logpath {};
     double total_amount {};
     double gained_amount {};
