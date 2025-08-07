@@ -9,23 +9,21 @@ using TimePoint = Clock::time_point;
 using std::chrono::milliseconds;
 using std::chrono::duration_cast;
 
-enum class TimerMode{
-    Stopwatch,
-    Countdown
-};
-
 class Timer{
 public:
+    enum class TimerMode{ Stopwatch, Countdown };
+    
     static Timer& MainTimer();
 
     Timer(TimerMode tm, int64_t sec = 0);
     void startTimer();
     void stopTimer();
-    void toggleTimer();
+    void toggle();
     void resetTimer();
     void setTimer(int64_t ms);
     std::string timeFormat(int64_t ms) const;
     int64_t timeMs();
+    bool refresh();
     bool isTimerRunning() const;
 
 private:

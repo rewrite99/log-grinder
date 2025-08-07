@@ -26,7 +26,7 @@ void Timer::stopTimer(){
     tp_end = Clock::now();
 }
 
-void Timer::toggleTimer(){
+void Timer::toggle(){
     if (is_running) stopTimer();
     else startTimer();
 }
@@ -88,6 +88,20 @@ int64_t Timer::timeMs(){
         }
         default: return 0;
     }
+}
+
+bool Timer::refresh(){
+    static bool p_run {true};
+    static int64_t p_ms {-500};
+
+    int64_t now {(timeMs() / 500) * 500};
+
+    if (is_running != p_run || (is_running && now - p_ms >= 500)){
+        p_run = is_running;
+        p_ms = now;
+        return true;
+    }
+    return false;
 }
 
 bool Timer::isTimerRunning() const{ return is_running; }
