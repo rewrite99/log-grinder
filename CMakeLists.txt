@@ -10,6 +10,7 @@ add_executable(${APP_NAME}
     src/main.cpp
     src/moneylog.cpp
     src/timer.cpp
+    src/input_manager.cpp
     src/draw.cpp
 )
 
