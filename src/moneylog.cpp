@@ -18,9 +18,10 @@ MoneyLog& MoneyLog::Get(){
 void MoneyLog::updateLog(){
     for (const std::string& line : readLog()){
         double amount {extractAmount(line)};
-        if (amount > 0){                
+        if (amount > 0){ 
             gained_amount = amount;
-            total_amount += amount;            
+            total_amount += amount;
+            update = true;
         }
     }
 }
@@ -35,7 +36,7 @@ std::vector<std::string> MoneyLog::readLog(){
     static std::streampos last_pos {};
     static bool is_end {false};
 
-    if (Timer::MainTimer().isTimerRunning()){
+    if (!Timer::MainTimer().isTimerRunning()){
         is_end = true;
         return {};
     }
@@ -102,6 +103,14 @@ double MoneyLog::ratePerMin() const{
 double MoneyLog::gainedAmount() const{ return gained_amount; }
 
 double MoneyLog::totalAmount() const{ return total_amount; }
+
+bool MoneyLog::refresh(){
+    if (update){
+        update = false;
+        return true;
+    }
+    return false;
+}
 
 void MoneyLog::setFilePath(const std::filesystem::path& p){
     if (std::filesystem::is_regular_file(p)){

@@ -17,6 +17,7 @@ public:
     double ratePerMin() const;
     double gainedAmount() const;
     double totalAmount() const;
+    bool refresh();
     void setFilePath(const std::filesystem::path& p);
 
 private:
@@ -24,6 +25,7 @@ private:
     std::filesystem::path logpath {};
     double total_amount {};
     double gained_amount {};
+    bool update {false};
 
     MoneyLog() = default;
     ~MoneyLog() = default;
