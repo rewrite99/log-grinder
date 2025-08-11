@@ -17,8 +17,8 @@ struct ConsoleSetup{
         }
 
         if (GetConsoleMode(hIn, &oldIn)){
-            DWORD mask = static_cast<DWORD>(ENABLE_MOUSE_INPUT | ENABLE_QUICK_EDIT_MODE);
-            DWORD inMode = oldIn & ~mask;
+            DWORD disable = static_cast<DWORD>(ENABLE_MOUSE_INPUT | ENABLE_QUICK_EDIT_MODE);
+            DWORD inMode = oldIn & ~disable;
             SetConsoleMode(hIn, inMode);
         }
 
