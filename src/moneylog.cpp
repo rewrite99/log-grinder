@@ -26,6 +26,10 @@ void MoneyLog::updateLog(){
     }
 }
 
+void MoneyLog::resetLog(){
+    gained_amount = total_amount = 0.0;
+}
+
 void MoneyLog::exitFileNotFound() const{
     fmt::print("\033[H\033[0JFile not found.. press any key to exit\n");
     _getch();

@@ -9,6 +9,7 @@ public:
     static MoneyLog& Get();
 
     void updateLog();
+    void resetLog();
     void exitFileNotFound() const;
     std::vector<std::string> readLog();
     std::string addComma(double d);
