@@ -1,4 +1,5 @@
 #include "input_manager.hpp"
+#include "moneylog.hpp"
 #include "timer.hpp"
 
 #include <cstdlib>
@@ -6,8 +7,10 @@
 #include <windows.h>
 
 InputManager::InputManager(){
-    for (const auto& [act, k] : bindings)
-        prev[act] = cur[act] = false;
+    for (const auto& [_, key] : key_binds){
+        p_keystate[key[FIRST]] = c_keystate[key[FIRST]] = false;
+        if (key[SECOND] != 0) p_keystate[key[SECOND]] = c_keystate[key[SECOND]] = false;
+    }
 }
 
 InputManager& InputManager::Get(){
@@ -16,20 +19,26 @@ InputManager& InputManager::Get(){
 }
 
 void InputManager::update(){
-    prev = cur;
-    for (const auto& [act, k] : bindings){
-        bool k1 {(GetAsyncKeyState(k[0]) & 0x8000) != 0};
-        bool k2 {k[1] == 0 ? true : ((GetAsyncKeyState(k[1]) & 0x8000) != 0)};
-        cur[act] = k1 && k2;
+    p_keystate = c_keystate;
+    for (const auto& [_, key] : key_binds){
+        c_keystate[key[FIRST]] = GetAsyncKeyState(key[FIRST]) & 0x8000;
+        if (key[SECOND] != 0) c_keystate[key[SECOND]] = GetAsyncKeyState(key[SECOND]) & 0x8000;
     }
 }
 
-bool InputManager::isPressed(Action a){
-    return !prev.at(a) && cur.at(a);
+bool InputManager::isPressed(Action a) {
+    const auto& key = key_binds[a];
+
+    if (key[SECOND] == 0) return !p_keystate[key[FIRST]] && c_keystate[key[FIRST]];
+    return (c_keystate[key[FIRST]]) && (!p_keystate[key[SECOND]] && c_keystate[key[SECOND]]);
 }
 
 void InputManager::handleInput(){
+    update();
     if (isPressed(Action::Toggle)) Timer::MainTimer().toggle();
-    if (isPressed(Action::Reset))  Timer::MainTimer().resetTimer();
-    if (isPressed(Action::Exit))   std::exit(EXIT_SUCCESS);
+    if (isPressed(Action::Reset)){ 
+        MoneyLog::Get().resetLog();
+        Timer::MainTimer().resetTimer();
+    }
+    if (isPressed(Action::Exit)) std::exit(EXIT_SUCCESS);
 }

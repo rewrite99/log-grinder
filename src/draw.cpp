@@ -10,8 +10,8 @@
 
 void draw(){
     MoneyLog& mlog {MoneyLog::Get()};
+    int redraw_count {};
 
-    int counter {};
     constexpr auto TEMPLATE {FMT_COMPILE(
         "\033[?25l\033[H"
         "Time\t{:>15}\n"
@@ -22,19 +22,20 @@ void draw(){
         "Redraw count: {}"
         )
     };
-    Timer::MainTimer().startTimer();
+    
     while (true){
         mlog.updateLog();
+        InputManager::Get().handleInput();
 
         if (Timer::MainTimer().refresh() || mlog.refresh()){
-            ++counter;
+            ++redraw_count;
             fmt::print(TEMPLATE,
             Timer::MainTimer().timeFormat(Timer::MainTimer().timeMs()),
             mlog.addComma(mlog.gainedAmount()),
             mlog.addComma(mlog.totalAmount()),
             mlog.addComma(mlog.ratePerHr()),
             mlog.addComma(mlog.ratePerMin()),
-            counter
+            redraw_count
             );
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(16));
