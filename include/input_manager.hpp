@@ -6,7 +6,7 @@
 
 class InputManager{
 public:
-    enum class Action {Toggle, Reset, Exit};
+    enum class Action {Toggle, Reset, ResetGorb, Exit};
     enum class KeyIndex {First, Second};
 
     static InputManager& Get();
@@ -24,6 +24,7 @@ private:
     std::unordered_map<Action, std::array<int, 2>> key_binds{
         {Action::Toggle, {'Q', 'S'}},
         {Action::Reset, {'Q', 'R'}},
+        {Action::ResetGorb, {'3', '4'}},
         {Action::Exit, {'Q', VK_ESCAPE}}
     };
     std::unordered_map<int, bool> p_keystate {};

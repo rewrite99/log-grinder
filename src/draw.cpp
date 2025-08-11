@@ -19,6 +19,7 @@ void draw(){
         "Total\t{:>15}\n"
         "{:>23}/hr\n"
         "{:>23}/min\n"
+        "GOrb: {:>4}\n"
         "Redraw count: {}"
         )
     };
@@ -27,7 +28,7 @@ void draw(){
         mlog.updateLog();
         InputManager::Get().handleInput();
 
-        if (Timer::MainTimer().refresh() || mlog.refresh()){
+        if (Timer::MainTimer().refresh() || Timer::GorbTimer().refresh() || mlog.refresh()){
             ++redraw_count;
             fmt::print(TEMPLATE,
             Timer::MainTimer().timeFormat(Timer::MainTimer().timeMs()),
@@ -35,6 +36,7 @@ void draw(){
             mlog.addComma(mlog.totalAmount()),
             mlog.addComma(mlog.ratePerHr()),
             mlog.addComma(mlog.ratePerMin()),
+            Timer::GorbTimer().cdSeconds(Timer::GorbTimer().timeMs()),
             redraw_count
             );
         }

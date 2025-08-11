@@ -40,5 +40,6 @@ void InputManager::handleInput(){
         MoneyLog::Get().resetLog();
         Timer::MainTimer().resetTimer();
     }
+    if (isPressed(Action::ResetGorb)) Timer::GorbTimer().restartTimer();
     if (isPressed(Action::Exit)) std::exit(EXIT_SUCCESS);
 }

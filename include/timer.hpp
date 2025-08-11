@@ -14,13 +14,16 @@ public:
     enum class TimerMode{ Stopwatch, Countdown };
     
     static Timer& MainTimer();
+    static Timer& GorbTimer();
 
     Timer(TimerMode tm, int64_t sec = 0);
     void startTimer();
     void stopTimer();
     void toggle();
     void resetTimer();
+    void restartTimer();
     void setTimer(int64_t ms);
+    std::string cdSeconds(int64_t ms) const;
     std::string timeFormat(int64_t ms) const;
     int64_t timeMs();
     bool refresh();

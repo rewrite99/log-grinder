@@ -11,9 +11,15 @@ Timer& Timer::MainTimer(){
     return t;
 }
 
+Timer& Timer::GorbTimer(){
+    static Timer gorb {TimerMode::Countdown, 240};
+    return gorb;
+}
+
 Timer::Timer(TimerMode tm, int64_t sec) : mode{tm}{
     int64_t ms {sec * 1000};
     setTimer(ms);
+    if (tm == TimerMode::Countdown) startTimer();
 }
 
 void Timer::startTimer(){
@@ -39,6 +45,11 @@ void Timer::resetTimer(){
     update = true;
 }
 
+void Timer::restartTimer(){
+    tp_start = tp_end = Clock::now();
+    update = true;
+}
+
 void Timer::setTimer(int64_t ms){
     stopTimer();
 
@@ -52,6 +63,11 @@ void Timer::setTimer(int64_t ms){
             break;
         default: break;
     }
+}
+
+std::string Timer::cdSeconds(int64_t ms) const{
+    int64_t sec {ms / 1000};
+    return fmt::format(FMT_COMPILE("{}s"), sec);
 }
 
 std::string Timer::timeFormat(int64_t ms) const{
@@ -95,8 +111,8 @@ int64_t Timer::timeMs(){
 
 bool Timer::refresh(){
     int64_t now {(timeMs() / 500) * 500};
-
-    if (update || (is_running && now - p_ms >= 500)){
+    bool should {mode == TimerMode::Stopwatch ? (is_running && now - p_ms >= 500) : (is_running && now - p_ms <= -500)};
+    if (update || should){
         p_ms = now;
         update = false;
         return true;
