@@ -19,11 +19,13 @@ Timer::Timer(TimerMode tm, int64_t sec) : mode{tm}{
 void Timer::startTimer(){
     is_running = true;
     tp_start = Clock::now() - (tp_end - tp_start);
+    update = true;
 }
 
 void Timer::stopTimer(){
     is_running = false;
     tp_end = Clock::now();
+    update = true;
 }
 
 void Timer::toggle(){
@@ -34,6 +36,7 @@ void Timer::toggle(){
 void Timer::resetTimer(){
     is_running = false;
     tp_start = tp_end = {};
+    update = true;
 }
 
 void Timer::setTimer(int64_t ms){
@@ -91,14 +94,11 @@ int64_t Timer::timeMs(){
 }
 
 bool Timer::refresh(){
-    static bool p_run {true};
-    static int64_t p_ms {-500};
-
     int64_t now {(timeMs() / 500) * 500};
 
-    if (is_running != p_run || (is_running && now - p_ms >= 500)){
-        p_run = is_running;
+    if (update || (is_running && now - p_ms >= 500)){
         p_ms = now;
+        update = false;
         return true;
     }
     return false;

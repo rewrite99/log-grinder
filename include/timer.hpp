@@ -32,6 +32,8 @@ private:
     TimePoint tp_end {};
     int64_t remaining_ms {};
     bool is_running {false};
+    bool update {true};
+    int64_t p_ms {};
 
     static constexpr int64_t TIME_LIMIT {3'600'000'000};
 };
