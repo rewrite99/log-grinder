@@ -22,7 +22,7 @@ struct ConsoleSetup{
             SetConsoleMode(hIn, inMode);
         }
 
-        fmt::print("\033[H\033[0J");
+        fmt::print("\033[H\033[2J\033[3J");
     }
 
     ~ConsoleSetup(){
